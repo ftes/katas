@@ -10,6 +10,7 @@ defmodule Player do
   defp parse([], 10, [_, _, _] = frame), do: [{:last, frame}]
   defp parse([], 10, [r1, r2] = frame) when r1 + r2 < 10, do: [{:last, frame}]
   defp parse([r | rest], 10, frame), do: parse(rest, 10, frame ++ [r])
+  # Not tail recursive. Last call is list prepend. But probably not an issue: https://www.erlang.org/doc/efficiency_guide/myths.html#id61840
   defp parse([10 | rest], i, []), do: [{:strike, [10]} | parse(rest, i+1, [])]
   defp parse([r | rest], i, []), do: parse(rest, i, [r])
   defp parse([r2 | rest], i, [r1]) when r1+r2==10, do: [{:spare, [r1, r2]} | parse(rest, i+1, [])]
